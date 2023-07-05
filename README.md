@@ -11,3 +11,9 @@ SwapManager
 
 - Address: 0x9857686e49C006C8A14c0B722891078165AF848c
 - Eplorer: https://scan.pulsechain.com/address/0x9857686e49C006C8A14c0B722891078165AF848c
+
+#
+
+Audited by SolidProof:
+
+Check details: [https://docs.piteas.io/audit](https://docs.piteas.io/audit)
