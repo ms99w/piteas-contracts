@@ -53,9 +53,9 @@ contract PiteasRouter is Ownable, EthReceiver {
         bool srcETH = srcToken.isETH();
         if (msg.value < (srcETH ? detail.srcAmount : 0)) revert Errors.InvalidMsgValue();
 
-        uint256 beginBalance = destToken.balanceOf(address(this));
+        uint256 beginBalance = destToken.pbalanceOf(address(this));
         srcToken.execute(payable(msg.sender), swapManager, detail.srcAmount, data);
-        returnAmount = destToken.balanceOf(address(this)).sub(beginBalance,"Error");
+        returnAmount = destToken.pbalanceOf(address(this)).sub(beginBalance,"Error");
         
         address payable destReceiver = (detail.destAccount == address(0)) ? payable(msg.sender) : detail.destAccount;
         
