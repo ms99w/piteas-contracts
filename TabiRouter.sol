@@ -4,12 +4,12 @@ pragma solidity ^0.8.18;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-import "./libraries/PitERC20.sol";
+import "./libraries/TabiERC20.sol";
 import "./EthReceiver.sol";
 import "./errors/Errors.sol";
 
-contract PiteasRouter is Ownable, EthReceiver {
-    using PitERC20 for IERC20;
+contract TabiRouter is Ownable, EthReceiver {
+    using TabiERC20 for IERC20;
     using SafeMath for uint256;
 
     bool private status = true;
@@ -53,14 +53,14 @@ contract PiteasRouter is Ownable, EthReceiver {
         bool srcETH = srcToken.isETH();
         if (msg.value < (srcETH ? detail.srcAmount : 0)) revert Errors.InvalidMsgValue();
 
-        uint256 beginBalance = destToken.pbalanceOf(address(this));
+        uint256 beginBalance = destToken.tbalanceOf(address(this));
         srcToken.execute(payable(msg.sender), swapManager, detail.srcAmount, data);
-        returnAmount = destToken.pbalanceOf(address(this)).sub(beginBalance,"Error");
+        returnAmount = destToken.tbalanceOf(address(this)).sub(beginBalance,"Error");
         
         address payable destReceiver = (detail.destAccount == address(0)) ? payable(msg.sender) : detail.destAccount;
         
         if (returnAmount >= detail.destMinAmount) {
-            destToken.pTransfer(destReceiver, returnAmount);
+            destToken.tTransfer(destReceiver, returnAmount);
         }else{
             revert Errors.ReturnAmountIsNotEnough();
         }
@@ -82,6 +82,6 @@ contract PiteasRouter is Ownable, EthReceiver {
     }
 
     function withdrawFunds(IERC20 token, uint256 amount) external onlyOwner {
-        token.pTransfer(payable(msg.sender), amount);
+        token.tTransfer(payable(msg.sender), amount);
     }
 }

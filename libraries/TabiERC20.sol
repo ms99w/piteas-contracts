@@ -5,7 +5,7 @@ import "./SafeERC20.sol";
 import "../interfaces/ISwapManager.sol";
 import "./RevertReasonParser.sol";
 
-library PitERC20 {
+library TabiERC20 { 
     using SafeERC20 for IERC20;
     using SafeERC20 for IWETH;
 
@@ -29,7 +29,7 @@ library PitERC20 {
     }
 
     /// @dev Returns `account` ERC20 `token` balance.
-    function pBalanceOf(IERC20 token, address account) internal view returns (uint256) {
+    function tBalanceOf(IERC20 token, address account) internal view returns (uint256) {
         if (isETH(token)) {
             return account.balance;
         } else {
@@ -38,7 +38,7 @@ library PitERC20 {
     }
 
     /// @dev Reverts if `token` is ETH, otherwise performs ERC20 forceApprove.
-    function pApprove(
+    function tApprove(
         IERC20 token,
         address to,
         uint256 amount
@@ -51,7 +51,7 @@ library PitERC20 {
     }
 
     /// @dev Returns `account` ERC20 `token` balance.
-    function pAmountFixer(IERC20 token, uint256 amount) internal view returns (uint256 fixedAmount) {
+    function tAmountFixer(IERC20 token, uint256 amount) internal view returns (uint256 fixedAmount) {
         address account = address(this);
         if (amount <= 0) {
             if (isETH(token)) {
@@ -67,7 +67,7 @@ library PitERC20 {
 
     /// @dev `token` transfer `to` `amount`.
     /// Note that this function does nothing in case of zero amount.
-    function pTransfer(
+    function tTransfer(
         IERC20 token,
         address payable to,
         uint256 amount
@@ -84,7 +84,7 @@ library PitERC20 {
         }
     }
 
-    function pTransferFrom(
+    function tTransferFrom(
         IERC20 token,
         address payable from,
         address to,
@@ -170,11 +170,11 @@ library PitERC20 {
         return (_success, _returnData);
     }
 
-    function pDeposit(uint256 amount) internal {
+    function tDeposit(uint256 amount) internal {
         WETH.safeDeposit(amount);
     }
 
-    function pWithdraw(uint256 amount) internal {
+    function tWithdraw(uint256 amount) internal {
         WETH.safeWithdraw(amount);
 
     }
